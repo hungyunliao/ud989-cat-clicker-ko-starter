@@ -1,4 +1,27 @@
 /* ===== MODEL ===== */
+var CatList = [
+    {
+        clickCount: 0,
+        name: 'Taddy',
+        imgSrc: './img/1413379559_412a540d29_z.jpg',
+        nickNames: [
+            {nickName: 'A', pre: 'Mr.'},
+            {nickName: 'B', pre: 'Sr.'},
+            {nickName: 'C', pre: 'Jr.'}
+        ]
+    },
+    {
+        clickCount: 0,
+        name: 'Bubble',
+        imgSrc: './img/22252709_010df3379e_z.jpg',
+        nickNames: [
+            {nickName: '1', pre: 'Mr.'},
+            {nickName: '2', pre: 'Sr.'},
+            {nickName: '3', pre: 'Jr.'}
+        ]
+    }
+];
+
 var Cat = function(data) {
     this.clickCount = ko.observable(data.clickCount);
     this.name = ko.observable(data.name);
@@ -22,16 +45,17 @@ var Cat = function(data) {
 var ViewModel = function() {
     var self = this; // A pointer pointing to the ViewModel itself which is out of the function scopes.
     
-    this.currentCat = ko.observable(new Cat({
-        clickCount: 0,
-        name: 'Taddy',
-        imgSrc: './img/1413379559_412a540d29_z.jpg',
-        nickNames: [
-            {nickName: 'A', pre: 'Mr.'},
-            {nickName: 'B', pre: 'Sr.'},
-            {nickName: 'C', pre: 'Jr.'}
-        ]
-    }));
+    this.catList = ko.observableArray([]);
+    
+    CatList.forEach(function(cat) {
+        self.catList.push(new Cat(cat));    // Use pointer 'self' here
+    });
+    
+    this.currentCat = ko.observable(this.catList()[0]);
+    
+    this.setCurrentCat = function(index) {
+        self.currentCat(self.catList()[index]);
+    };
     
     this.incrementCounter = function() {
         // Approuch 1: the 'this' here is in the 'with' binding context which means that 'this' here == 'this.currentCat()', so here we cannot use this.currentCat().clickCount anymore.
