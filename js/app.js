@@ -13,6 +13,12 @@ var ViewModel = function() {
     }, this);   // Need to pass 'this' into the function so that it can be used inside the function.
     this.name = ko.observable('Taddy');
     this.imgSrc = ko.observable('./img/1413379559_412a540d29_z.jpg');
+    this.nickNames = ko.observableArray([
+        {nickName: 'A', pre: 'Mr.'},
+        {nickName: 'B', pre: 'Sr.'},
+        {nickName: 'C', pre: 'Jr.'}
+    ]);
+    
     
     this.incrementCounter = function() {
         this.clickCount(this.clickCount() + 1);
