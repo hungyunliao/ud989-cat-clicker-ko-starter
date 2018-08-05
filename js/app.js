@@ -1,6 +1,10 @@
 /* ===== MODEL ===== */
-var Cat = function() {
-    this.clickCount = ko.observable(0);
+var Cat = function(data) {
+    this.clickCount = ko.observable(data.clickCount);
+    this.name = ko.observable(data.name);
+    this.imgSrc = ko.observable(data.imgSrc);
+    this.nickNames = ko.observableArray(data.nickNames);
+    
     this.level = ko.computed(function() {
         if (this.clickCount() < 10) {
             return 'Infant';
@@ -10,13 +14,6 @@ var Cat = function() {
             return 'Teen';
         }
     }, this);   // Need to pass 'this' into the function so that it can be used inside the function.
-    this.name = ko.observable('Taddy');
-    this.imgSrc = ko.observable('./img/1413379559_412a540d29_z.jpg');
-    this.nickNames = ko.observableArray([
-        {nickName: 'A', pre: 'Mr.'},
-        {nickName: 'B', pre: 'Sr.'},
-        {nickName: 'C', pre: 'Jr.'}
-    ]);
 };
 
 /* ===== CONTROLLER =====*/
@@ -25,7 +22,16 @@ var Cat = function() {
 var ViewModel = function() {
     var self = this; // A pointer pointing to the ViewModel itself which is out of the function scopes.
     
-    this.currentCat = ko.observable(new Cat());
+    this.currentCat = ko.observable(new Cat({
+        clickCount: 0,
+        name: 'Taddy',
+        imgSrc: './img/1413379559_412a540d29_z.jpg',
+        nickNames: [
+            {nickName: 'A', pre: 'Mr.'},
+            {nickName: 'B', pre: 'Sr.'},
+            {nickName: 'C', pre: 'Jr.'}
+        ]
+    }));
     
     this.incrementCounter = function() {
         // Approuch 1: the 'this' here is in the 'with' binding context which means that 'this' here == 'this.currentCat()', so here we cannot use this.currentCat().clickCount anymore.
